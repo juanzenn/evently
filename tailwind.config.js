@@ -8,6 +8,13 @@ module.exports = {
   content: ["./src/**/*.{ts,tsx}"],
   theme: {
     extend: {
+      container: {
+        center: true,
+        padding: "1.5rem",
+        screens: {
+          "2xl": "1440px",
+        },
+      },
       fontFamily: {
         sans: ["Inter", ...fontFamily.sans],
       },

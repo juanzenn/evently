@@ -11,9 +11,10 @@ datasource db {
 }
 
 model Event {
-  id       Int       @id @default(autoincrement())
-  name     String
-  date     DateTime
-  endDate  DateTime?
-  location String
+  id          String    @id
+  name        String
+  description String
+  startDate   DateTime
+  endDate     DateTime?
+  location    String
 }
