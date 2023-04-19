@@ -1,20 +1,18 @@
 "use client";
 
 import * as Form from "@radix-ui/react-form";
-import { LatLng, LatLngExpression } from "leaflet";
-import React, { useEffect, useState } from "react";
+import { LatLng } from "leaflet";
+import dynamic from "next/dynamic";
+import React, { useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
-import {
-  MapContainer,
-  Marker,
-  Popup,
-  TileLayer,
-  useMap,
-  useMapEvents,
-} from "react-leaflet";
 import { Button } from "~/components/ui/button";
 import { Input } from "~/components/ui/input";
 import { Textarea } from "~/components/ui/textarea";
+
+const EventFormMap = dynamic(() => import("./EventFormMap"), {
+  ssr: false,
+  loading: () => <p>Loading map...</p>,
+});
 
 type Inputs = {
   name: string;
@@ -27,7 +25,6 @@ type Inputs = {
 export default function EventForm() {
   const [position, setPosition] = useState<LatLng | null>(null);
   const [locationName, setLocationName] = useState("");
-  const [loadingGeolocation, setLoadingGeolocation] = useState(true);
 
   const {
     register,
@@ -99,27 +96,13 @@ export default function EventForm() {
           <Input type="date" {...register("endDate")} />
         </Form.Control>
       </FormField>
-      {locationName}
 
-      <MapContainer
-        scrollWheelZoom
-        zoom={0}
-        center={[0, 0]}
-        style={{
-          height: "400px",
-          width: "600px",
-        }}
-      >
-        <TileLayer
-          attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-          url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-        />
-        <LocationMarker
-          position={position}
-          setPosition={setPosition}
-          setName={setLocationName}
-        />
-      </MapContainer>
+      {locationName}
+      <EventFormMap
+        position={position}
+        setName={setLocationName}
+        setPosition={setPosition}
+      />
 
       <Form.Submit asChild>
         <Button className="block w-fit ml-auto my-6" type="submit">
@@ -158,57 +141,5 @@ function FormField({
       </div>
       {children}
     </Form.Field>
-  );
-}
-
-async function _getReverseGeocoding(lat: number, lng: number) {
-  const res = await fetch(
-    `https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=${lat}&lon=${lng}`
-  );
-  const data = await res.json();
-
-  return data;
-}
-
-function _getDisplayName(data: any) {
-  return data.display_name;
-}
-
-function LocationMarker({
-  position,
-  setPosition,
-  setName,
-}: {
-  position: LatLng | null;
-  setPosition: (position: LatLng) => void;
-  setName: (name: string) => void;
-}) {
-  const map = useMapEvents({
-    click(e) {
-      _getReverseGeocoding(e.latlng.lat, e.latlng.lng).then((data) => {
-        setName(_getDisplayName(data));
-      });
-
-      setPosition(e.latlng);
-      map.flyTo(e.latlng);
-    },
-    locationfound(e) {
-      _getReverseGeocoding(e.latlng.lat, e.latlng.lng).then((data) => {
-        setName(_getDisplayName(data));
-      });
-
-      setPosition(e.latlng);
-      map.flyTo(e.latlng, 15);
-    },
-  });
-
-  useEffect(() => {
-    map.locate();
-  }, [map]);
-
-  return position === null ? null : (
-    <Marker position={position}>
-      <Popup>You are here</Popup>
-    </Marker>
   );
 }

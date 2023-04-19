@@ -1,8 +1,8 @@
 import { Metadata } from "next";
 import React from "react";
+import CreateNewEvent from "~/components/CreateNewEvent";
 import { Heading } from "~/components/ui/typography";
 import client from "~/server/db";
-import CreateNewEvent from "./CreateNewEvent";
 
 export default async function Dashboard() {
   const events = await client.event.findMany();

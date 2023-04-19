@@ -1,15 +1,10 @@
 "use client";
 
 import { Plus } from "lucide-react";
-import { Metadata } from "next";
 import Link from "next/link";
 import React from "react";
 import { Button } from "~/components/ui/button";
-import {
-  Heading,
-  Paragraph,
-  TypographySubtle,
-} from "~/components/ui/typography";
+import { TypographySubtle } from "~/components/ui/typography";
 
 export default function CreateNewEvent() {
   return (
