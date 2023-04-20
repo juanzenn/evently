@@ -21,7 +21,7 @@ export default function Navbar({ children }: Props) {
 
 function MarketingLinks() {
   return (
-    <ul className="flex gap-4 mr-auto ml-12">
+    <ul className="gap-4 mr-auto ml-12 hidden md:flex">
       <Navbar.Link href="/">Home</Navbar.Link>
       <Navbar.Link href="/about">About</Navbar.Link>
     </ul>
