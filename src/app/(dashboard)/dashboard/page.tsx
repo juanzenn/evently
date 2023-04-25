@@ -1,19 +1,17 @@
 import { Metadata } from "next";
 import React from "react";
-import CreateNewEvent from "~/components/CreateNewEvent";
+import Navbar from "~/components/Navbar";
 import { Heading } from "~/components/ui/typography";
-import client from "~/server/db";
+import { getCurrentUser } from "~/lib/session";
 
 export default async function Dashboard() {
-  const events = await client.event.findMany();
+  const user = await getCurrentUser();
 
   return (
-    <div>
+    <main>
       <Heading className="mb-4">Dashboard</Heading>
-
-      {!Boolean(events.length) && <CreateNewEvent />}
-      {Boolean(events.length) && <pre>{JSON.stringify(events, null, 2)}</pre>}
-    </div>
+      <p className="mb-4">Welcome back, {user?.name}!</p>
+    </main>
   );
 }
 
