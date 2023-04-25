@@ -1,5 +1,6 @@
 import { ChevronLeft } from "lucide-react";
 import Link from "next/link";
+import { redirect } from "next/navigation";
 import React from "react";
 import { buttonVariants } from "~/components/ui/button";
 import UserAuth from "~/components/UserAuth";
@@ -10,7 +11,7 @@ export default async function LoginPage() {
   const user = await getCurrentUser();
 
   if (user) {
-    return <>Gola</>;
+    redirect("/about");
   }
 
   return (

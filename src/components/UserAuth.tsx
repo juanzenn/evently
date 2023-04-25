@@ -2,6 +2,7 @@
 
 import { CircleEllipsis, Github } from "lucide-react";
 import { signIn } from "next-auth/react";
+import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 import { Button } from "./ui/button";
 
