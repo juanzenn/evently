@@ -8,6 +8,9 @@ export default async function AboutPage() {
     <div>
       About page
       <div>{user?.email}</div>
+      <button>
+        <a href="/api/auth/signout">Sign out</a>
+      </button>
     </div>
   );
 }
