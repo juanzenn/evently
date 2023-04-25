@@ -70,5 +70,14 @@ export const authOptions: NextAuthOptions = {
         secure: true,
       },
     },
+    state: {
+      name: "next-auth.state",
+      options: {
+        httpOnly: true,
+        sameSite: "none",
+        path: "/",
+        secure: true,
+      },
+    },
   },
 };
